@@ -15,14 +15,15 @@ public class PlayerH2Service implements PlayerRepository{
     private JdbcTemplate db;
 @Override
 public ArrayList<Player>getPlayers(){
-List<Player>playerList=db.query("select * from player",new PlayerRowMapper());
-return new ArrayList<>(playerList);
+List<Player>playerList=db.query("Select * from team",new PlayerRowMapper());
+ ArrayList<Player>players=new ArrayList<>(playerList);
+return players;
 
 }
 @Override
 public Player getPlayerById(int playerId){
     try{
-Player player=db.queryForObject("select * from player where id = ?", new PlayerRowMapper(),playerId);
+Player player=db.queryForObject("select * from team where id = ?", new PlayerRowMapper(),playerId);
           return player;
        }catch (Exception e){
 throw new ResponseStatusException(HttpStatus.NOT_FOUND);
@@ -30,25 +31,25 @@ throw new ResponseStatusException(HttpStatus.NOT_FOUND);
 }
 @Override
 public Player addPlayer(Player player){
-    db.update("INSERT INTO player(playerName,jerseyNumber,role)values(?,?,?)",player.getplayerName(),player.getjerseyNumber(),player.getrole());
-   
-    return getPlayerById(player.getplayerId());
+    db.update("insert into team(playerName,jerseyNumber,role)values(?,?,?)",player.getplayerName(),player.getjerseyNumber(),player.getrole());
+   Player savedplayer=db.queryForObject("select * from team where playerName=? and jerseyNumber=? and role=?",new PlayerRowMapper(),player.playerName(),player.jerseyNumber(),player.role());
+    return savedplayer;
 }
 @Override
 public Player updatedPlayer(int playerId,Player player){
     if(player.getplayerName()!=null){
-        db.update("UPDATE player SET playerName=? WHERE id=?",player.getplayerName(),playerId);
+        db.update("UPDATE team SET playerName=? WHERE id=?",player.getplayerName(),playerId);
     }
     if(player.getjerseyNumber()!=0){
-        db.update("UPDATE player SET jerseyNumber=? WHERE id=?",player.getjerseyNumber(),playerId);
+        db.update("UPDATE team SET jerseyNumber=? WHERE id=?",player.getjerseyNumber(),playerId);
     }
     if(player.getrole()!=null){
-        db.update("UPDATE player SET role=? WHERE id=?",player.getrole(),playerId);
+        db.update("UPDATE team SET role=? WHERE id=?",player.getrole(),playerId);
     }
     return getPlayerById(playerId);
     }
 @Override
 public void deletePlayer(int playerId){
-    db.update("DELETE FROM player WHERE id=?",playerId);
+    db.update("DELETE FROM team WHERE id=?",playerId);
 }
 }
