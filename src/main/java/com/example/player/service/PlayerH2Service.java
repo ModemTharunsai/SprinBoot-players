@@ -32,7 +32,7 @@ throw new ResponseStatusException(HttpStatus.NOT_FOUND);
 @Override
 public Player addPlayer(Player player){
     db.update("insert into team(playerName,jerseyNumber,role)values(?,?,?)",player.getplayerName(),player.getjerseyNumber(),player.getrole());
-   Player savedplayer=db.queryForObject("select * from team where playerName=? and jerseyNumber=? and role=?",new PlayerRowMapper(),player.playerName(),player.jerseyNumber(),player.role());
+   Player savedplayer=db.queryForObject("select * from team where playerName=? and jerseyNumber=? and role=?",new PlayerRowMapper(),player.getplayerName(),player.getjerseyNumber(),player.getrole());
     return savedplayer;
 }
 @Override
