@@ -48,7 +48,7 @@ return playerService.addPlayer(player);
         return playerService.updatedPlayer(playerId, player);
     }
      @DeleteMapping("/players/{playerId}")
-     public void deleteBook(@PathVariable("playerId")int playerId){
+     public void deletePlayer(@PathVariable("playerId")int playerId){
         playerService.deletePlayer(playerId);
      }
 }
